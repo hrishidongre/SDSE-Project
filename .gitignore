@@ -4,3 +4,9 @@ Backend/astrology-api/node_modules/
 *.log
 dist/
 build/
+.gemini/
+.claude/
+opencode.json
+ARCHITECTURAL_DOCS.md
+GEMINI.md
+graphify-out/
