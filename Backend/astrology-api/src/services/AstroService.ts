@@ -2,7 +2,6 @@ import axios, { AxiosInstance } from "axios";
 import { vedicAstroConfig } from "../config/vedicAstroConfig";
 import { BaseService } from "../core/BaseService";
 import { VedicParams } from "../types/vedic";
-import { cacheService } from "./cacheService";
 import { IAstroService } from "./interfaces/IAstroService";
 
 export class AstroService extends BaseService implements IAstroService {
@@ -17,15 +16,10 @@ export class AstroService extends BaseService implements IAstroService {
     });
   }
 
-  protected async callEndpoint(
+  private async callApi(
     endpoint: string,
-    params: Record<string, unknown>,
-    cacheKey: string,
-    ttlSeconds = 60 * 60 * 24 * 30
+    params: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
-    const cached = await cacheService.get<Record<string, unknown>>(cacheKey);
-    if (cached) return cached;
-
     const response = await this.client.get(endpoint, {
       params: {
         ...params,
@@ -33,17 +27,11 @@ export class AstroService extends BaseService implements IAstroService {
         lang: "en",
       },
     });
-
-    await cacheService.set(cacheKey, response.data, ttlSeconds);
     return response.data as Record<string, unknown>;
   }
 
   public fetchManglikDosh(params: VedicParams): Promise<Record<string, unknown>> {
-    return this.callEndpoint(
-      vedicAstroConfig.endpoints.manglikDosh,
-      { ...params },
-      `manglik:${params.dob}:${params.tob}:${params.lat}:${params.lon}:${params.tz}`
-    );
+    return this.callApi(vedicAstroConfig.endpoints.manglikDosh, { ...params });
   }
 
   public fetchOtherdosha(params: VedicParams, doshaType: string): Promise<Record<string, unknown>> {
@@ -64,20 +52,11 @@ export class AstroService extends BaseService implements IAstroService {
       default:
         throw new Error("Invalid dosha type for fetchOtherdosha");
     }
-
-    return this.callEndpoint(
-      endpoint,
-      { ...params },
-      `${doshaType}:${params.dob}:${params.tob}:${params.lat}:${params.lon}:${params.tz}`
-    );
+    return this.callApi(endpoint, { ...params });
   }
 
   public fetchBirthChart(params: VedicParams): Promise<Record<string, unknown>> {
-    return this.callEndpoint(
-      vedicAstroConfig.endpoints.birthChart,
-      { ...params },
-      `birthchart:${params.dob}:${params.tob}:${params.lat}:${params.lon}:${params.tz}`
-    );
+    return this.callApi(vedicAstroConfig.endpoints.birthChart, { ...params });
   }
 }
 

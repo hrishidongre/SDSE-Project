@@ -55,6 +55,6 @@ const userProfileSchema = new Schema<IUserProfile>(
   { timestamps: true }
 );
 
-userProfileSchema.index({ userId: 1 });
+
 
 export const UserProfileModel = mongoose.model<IUserProfile>("UserProfile", userProfileSchema);

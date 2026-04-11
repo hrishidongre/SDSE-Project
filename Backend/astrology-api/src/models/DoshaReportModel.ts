@@ -36,7 +36,7 @@ const doshaReportSchema = new Schema<IDoshaReport>(
 
 doshaReportSchema.index({ userId: 1, doshaType: 1 });
 doshaReportSchema.index({ userId: 1, severity: 1 });
-doshaReportSchema.index({ expiresAt: 1 });
+
 
 export const DoshaReportModel = mongoose.model<IDoshaReport>("DoshaReport", doshaReportSchema);
 
