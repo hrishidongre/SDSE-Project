@@ -1,301 +1,249 @@
 # Class Diagram
 
-> Architecture overview for the Astro/Vedic chart backend — controllers, services, models, and their relationships.
+> Architecture overview for the Astrology backend - showing controllers, services, models, interfaces, and their relationships.
+> Updated with SOLID principles implementation and OOP encapsulation.
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#4a90d9', 'edgeLabelBackground':'#ffffff', 'tertiaryColor': '#f0f0f0'}}}%%
 classDiagram
-direction TB
-
-class BaseController {
-  <<abstract>>
-  #ok(res: Response, data: unknown, message?: string) Response
-  #created(res: Response, data: unknown, message?: string) Response
-  #fail(res: Response, status: number, message: string) Response
-  #asyncHandler(fn: AsyncHandlerFn) RequestHandler
-}
-
-class BaseService {
-  <<abstract>>
-  #serviceName: string
-  #logInfo(message: string) void
-  #logError(message: string, stack?: string) void
-}
-
-class AstroController {
-  -signToken(user: AuthPayload) string
-  +register: RequestHandler
-  +login: RequestHandler
-  +forgotPassword: RequestHandler
-  +resetPassword: RequestHandler
-  +deletedAccount: RequestHandler
-}
-
-class ChartController {
-  -buildChartParamsFromProfile(profile: IUserProfile) VedicParams
-  +generateChart: RequestHandler
-  +getChart: RequestHandler
-  +getChartById: RequestHandler
-  +renameChart: RequestHandler
-  +saveChart: RequestHandler
-  +deleteChart: RequestHandler
-}
-
-class DoshaController {
-  -resolveDoshaRequest(doshaType: DoshaType, params: VedicParams) Promise~Record<string, unknown>~
-  +getDoshaTypes: RequestHandler
-  +searchDoshas: RequestHandler
-  +checkDosha: RequestHandler
-  +getDoshaReport: RequestHandler
-  +deleteDoshaReport: RequestHandler
-}
-
-class ProfileController {
-  -canAccessUser(reqUserId: string, reqUserRole: string, targetUserId: string) boolean
-  +createProfile: RequestHandler
-  +getProfile: RequestHandler
-  +updateProfile: RequestHandler
-  +deleteProfile: RequestHandler
-}
-
-class UserController {
-  +getMe: RequestHandler
-  +getUsers: RequestHandler
-}
-
-class AstroService {
-  #serviceName: string
-  -client: AxiosInstance
-  +constructor()
-  -callApi(endpoint: string, params: Record<string, unknown>) Promise~Record<string, unknown>~
-  +fetchManglikDosh(params: VedicParams) Promise~Record<string, unknown>~
-  +fetchOtherdosha(params: VedicParams, doshaType: string) Promise~Record<string, unknown>~
-  +fetchBirthChart(params: VedicParams) Promise~Record<string, unknown>~
-}
-
-class BirthChartService {
-  #serviceName: string
-  +formatDate(date: DateInput) string
-  +isValidTimeFormat(time: string) boolean
-  +convertTo24Hour(time12h: string) string
-}
-
-class DoshaService {
-  #serviceName: string
-  +formatDate(date: DateInput) string
-  +calculateSeverity(apiResponse: Record<string, unknown>) SeverityLevel
-  +formatReport(report: FormattableDoshaReport) Record<string, unknown>
-}
-
-class ProfileService {
-  #serviceName: string
-  +getProfileByUserId(userId: string) Promise~IUserProfileOrNull~
-  +createProfile(profileData: Partial~IUserProfile~) Promise~IUserProfile~
-  +updateProfile(profile: IUserProfile, updates: Record<string, any>) Promise~IUserProfile~
-  +softDeleteProfile(profile: IUserProfile) Promise~void~
-}
-
-class LoggerService {
-  -logger: Logger
-  +info(message: string) void
-  +warn(message: string) void
-  +error(message: string, stack?: string) void
-}
-
-class DoshaReportHelper {
-  +isExpired(report: IDoshaReport) boolean
-  +cacheReport(data: any) Promise~IDoshaReport~
-}
-
-class FormattableDoshaReport {
-  <<type>>
-}
-
-class DateInput {
-  <<type>>
-  Date
-  string
-}
-
-class IUserProfileOrNull {
-  <<type>>
-  IUserProfile
-  null
-}
-
-class SeverityLevel {
-  <<type>>
-  low
-  medium
-  high
-}
-
-class UserRole {
-  <<type>>
-  user
-  admin
-}
-
-class Gender {
-  <<type>>
-  male
-  female
-  other
-}
-
-class IAstroService {
-  <<interface>>
-  +fetchManglikDosh(params: VedicParams) Promise~Record<string, unknown>~
-  +fetchOtherdosha(params: VedicParams, doshaType: string) Promise~Record<string, unknown>~
-  +fetchBirthChart(params: VedicParams) Promise~Record<string, unknown>~
-}
-
-class AuthPayload {
-  <<interface>>
-  +_id: string
-  +email: string
-  +role: UserRole
-}
-
-class VedicParams {
-  <<interface>>
-  +dob: string
-  +tob: string
-  +lat: number
-  +lon: number
-  +tz: string
-}
-
-class User {
-  +name: string
-  +email: string
-  +password: string
-  +role: UserRole
-  +resetPasswordToken?: string
-  +resetPasswordExpires?: Date
-  +createdAt: Date
-  +updatedAt: Date
-}
-
-class UserProfile {
-  +userId: ObjectId
-  +personalInfo: IPersonalInfo
-  +timezone: string
-  +isDeleted: boolean
-  +deletedAt?: Date
-}
-
-class IPersonalInfo {
-  +name: string
-  +gender: Gender
-  +dateOfBirth: Date
-  +timeOfBirth: string
-  +placeOfBirth: IPlaceOfBirth
-}
-
-class IPlaceOfBirth {
-  +city: string
-  +state?: string
-  +country: string
-  +coordinates: Coordinates
-}
-
-class Coordinates {
-  +latitude: number
-  +longitude: number
-}
-
-class BirthChart {
-  +userId: ObjectId
-  +profileId: ObjectId
-  +chartName: string
-  +chartData: Record<string, unknown>
-  +chartImage?: string
-  +generatedAt: Date
-  +isDeleted: boolean
-}
-
-class DoshaReport {
-  +userId: ObjectId
-  +profileId: ObjectId
-  +doshaType: DoshaType
-  +inputParams: Record<string, unknown>
-  +apiResponse: Record<string, unknown>
-  +isPresent: boolean
-  +severity: SeverityLevel
-  +remedies: string[]
-  +cachedAt: Date
-  +expiresAt: Date
-}
-
-class GeoCoordinates {
-  <<interface>>
-  +latitude: number
-  +longitude: number
-}
-
-class DoshaType {
-  <<type>>
-  manglik
-  kalsarp
-  sadesati
-  pitradosh
-  nadi
-}
-
-BaseController <|-- AstroController
-BaseController <|-- ChartController
-BaseController <|-- DoshaController
-BaseController <|-- ProfileController
-BaseController <|-- UserController
-
-BaseService <|-- AstroService
-BaseService <|-- BirthChartService
-BaseService <|-- DoshaService
-BaseService <|-- ProfileService
-IAstroService <|.. AstroService
-
-User "1" --> "0..1" UserProfile : userId (unique)
-User "1" --> "0..*" BirthChart : userId
-UserProfile "1" --> "0..*" BirthChart : profileId
-User "1" --> "0..*" DoshaReport : userId
-UserProfile "1" --> "0..*" DoshaReport : profileId
-
-UserProfile *-- IPersonalInfo
-IPersonalInfo *-- IPlaceOfBirth
-IPlaceOfBirth *-- Coordinates
-
-AstroController ..> User
-UserController ..> User
-ChartController ..> UserProfile
-ChartController ..> BirthChart
-ChartController ..> AstroService
-ChartController ..> BirthChartService
-DoshaController ..> UserProfile
-DoshaController ..> DoshaReport
-DoshaController ..> AstroService
-DoshaController ..> DoshaService
-ProfileController ..> ProfileService
-ProfileController ..> BirthChart
-ProfileController ..> DoshaReport
-
-BaseService ..> LoggerService
-DoshaReportHelper ..> DoshaReport
+    direction TB
+    
+    %% Base Classes (Abstraction)
+    class BaseController {
+        <<abstract>>
+        +ok(res: Response, data: unknown, message?: string) Response
+        +created(res: Response, data: unknown, message?: string) Response
+        +fail(res: Response, status: number, message: string) Response
+        +asyncHandler(fn) RequestHandler
+    }
+    
+    class BaseService {
+        <<abstract>>
+        #serviceName: string
+        +logInfo(message: string) void
+        +logError(message: string, stack?: string) void
+    }
+    
+    %% Interfaces (Dependency Inversion)
+    class IAstroService {
+        <<interface>>
+        +fetchManglikDosh(params: VedicParams) Promise~Record~
+        +fetchOtherdosha(params: VedicParams, doshaType: string) Promise~Record~
+        +fetchBirthChart(params: VedicParams) Promise~Record~
+    }
+    
+    class ICacheService {
+        <<interface>>
+        +get(key: string) Promise~any~
+        +set(key: string, value: any, ttl?: number) Promise~boolean~
+        +delete(key: string) Promise~boolean~
+    }
+    
+    %% User Model (Encapsulation)
+    class IUser {
+        <<public>>
+        +_id: ObjectId
+        +name: string
+        +email: string
+        +role: "user" | "admin"
+        +createdAt: Date
+        +updatedAt: Date
+    }
+    
+    class IUserInternal {
+        <<internal>>
+        +password: string
+        +resetPasswordToken?: string
+        +resetPasswordExpires?: Date
+    }
+    
+    class UserModel {
+        +toJSON() object
+    }
+    
+    %% DoshaReport Model (Encapsulation)
+    class IDoshaReport {
+        <<public>>
+        +_id: ObjectId
+        +userId: ObjectId
+        +profileId: ObjectId
+        +doshaType: DoshaType
+        +isPresent: boolean
+        +severity: "low" | "medium" | "high"
+        +summary: string
+        +remedies: string[]
+        +cachedAt: Date
+        +expiresAt: Date
+    }
+    
+    class IDoshaReportInternal {
+        <<internal>>
+        +inputParams: Record~string, unknown~
+        +apiResponse: Record~string, unknown~
+    }
+    
+    class DoshaReportModel {
+        +toJSON() object
+    }
+    
+    class DoshaReportHelper {
+        <<static>>
+        +isExpired(report: IDoshaReportInternal) boolean
+        +createReport(data) Promise~IDoshaReportInternal~
+    }
+    
+    %% Controllers (Inheritance)
+    class AstroController {
+        +register: RequestHandler
+        +login: RequestHandler
+        +forgotPassword: RequestHandler
+        +resetPassword: RequestHandler
+        +deletedAccount: RequestHandler
+    }
+    
+    class ProfileController {
+        +createProfile: RequestHandler
+        +getProfile: RequestHandler
+        +updateProfile: RequestHandler
+        +deleteProfile: RequestHandler
+    }
+    
+    class ChartController {
+        +generateChart: RequestHandler
+        +getChart: RequestHandler
+        +getChartById: RequestHandler
+        +renameChart: RequestHandler
+        +deleteChart: RequestHandler
+    }
+    
+    class DoshaController {
+        +getDoshaTypes: RequestHandler
+        +searchDoshas: RequestHandler
+        +checkDosha: RequestHandler
+        +getDoshaReport: RequestHandler
+        +deleteDoshaReport: RequestHandler
+    }
+    
+    class UserController {
+        +getMe: RequestHandler
+        +getUsers: RequestHandler
+    }
+    
+    %% Services (Single Responsibility + Open/Closed)
+    class AstroService {
+        -DOSHA_ENDPOINT_MAP: Record~string, string~
+        -client: AxiosInstance
+        +callApi(endpoint: string, params: object) Promise~Record~
+        +fetchManglikDosh(params: VedicParams) Promise~Record~
+        +fetchOtherdosha(params: VedicParams, doshaType: string) Promise~Record~
+        +fetchBirthChart(params: VedicParams) Promise~Record~
+    }
+    
+    class DoshaService {
+        +formatDate(date: Date|string) string
+        +calculateSeverity(apiResponse: object) "low"|"medium"|"high"
+        +formatReport(report: object) object
+    }
+    
+    class BirthChartService {
+        +formatDate(date: Date|string) string
+        +isValidTimeFormat(time: string) boolean
+        +convertTo24Hour(time12h: string) string
+    }
+    
+    class ProfileService {
+        +getProfileByUserId(userId: string) Promise~IUserProfile~
+        +createProfile(data: Partial~IUserProfile~) Promise~IUserProfile~
+        +updateProfile(profile: IUserProfile, updates: object) Promise~IUserProfile~
+        +deleteProfile(profile: IUserProfile) Promise~IUserProfile~
+    }
+    
+    class CacheService {
+        +get(key: string) Promise~any~
+        +set(key: string, value: any, ttl?: number) Promise~boolean~
+        +delete(key: string) Promise~boolean~
+    }
+    
+    %% Models
+    class IUserProfile {
+        +userId: ObjectId
+        +personalInfo: IPersonalInfo
+        +timezone: string
+        +isDeleted: boolean
+    }
+    
+    class IBirthChart {
+        +userId: ObjectId
+        +profileId: ObjectId
+        +chartName: string
+        +chartData: object
+        +chartImage?: string
+        +generatedAt: Date
+        +isDeleted: boolean
+    }
+    
+    %% Relationships (Inheritance)
+    BaseController <|-- AstroController
+    BaseController <|-- ProfileController
+    BaseController <|-- ChartController
+    BaseController <|-- DoshaController
+    BaseController <|-- UserController
+    
+    BaseService <|-- AstroService
+    BaseService <|-- DoshaService
+    BaseService <|-- BirthChartService
+    BaseService <|-- ProfileService
+    BaseService <|-- CacheService
+    
+    %% Interface Implementation (Dependency Inversion)
+    IAstroService <|.. AstroService
+    ICacheService <|.. CacheService
+    
+    %% Encapsulation Relationships
+    IUser <|-- IUserInternal
+    IUser <|.. UserModel
+    
+    IDoshaReport <|-- IDoshaReportInternal
+    IDoshaReport <|.. DoshaReportModel
+    IDoshaReportHelper ..> DoshaReportModel : uses
+    
+    %% Service uses Models
+    UserModel ..> IUser : provides
+    UserModel ..> IUserInternal : stores
+    DoshaReportModel ..> IDoshaReport : provides
+    DoshaReportModel ..> IDoshaReportInternal : stores
+    
+    note for BaseController "Abstraction: Provides common response methods"
+    note for BaseService "Abstraction: Provides common logging"
+    note for IAstroService "Dependency Inversion: Interface for external API"
+    note for IUser "Encapsulation: Public fields only - not sensitive"
+    note for IUserInternal "Encapsulation: Private - includes password & tokens"
+    note for UserModel.toJSON "Filters sensitive data from responses"
+    note for DoshaReportModel.toJSON "Filters birth data from responses"
+    note for DOSHA_ENDPOINT_MAP "Open/Closed: Add new doshas without code changes"
 ```
 
 ---
 
-## Legend
+## SOLID Principles in This Diagram
 
-| Symbol | Meaning |
-|--------|---------|
-| `<\|--` | Inheritance (extends) |
-| `<\|..` | Implementation (implements interface) |
-| `-->` | Association / reference |
-| `*--` | Composition (owns) |
-| `..>` | Dependency (uses) |
-| `<<abstract>>` | Abstract class |
-| `<<interface>>` | Interface |
-| `<<type>>` | Type alias / enum |
-| `+` | Public |
-| `-` | Private |
-| `#` | Protected |
+| Principle | Implementation |
+|-----------|----------------|
+| **Single Responsibility** | Each service has focused methods |
+| **Open/Closed** | DOSHA_ENDPOINT_MAP - extend without modification |
+| **Liskov Substitution** | All controllers extend BaseController |
+| **Interface Segregation** | IAstroService, ICacheService interfaces |
+| **Dependency Inversion** | Depend on interfaces, not concrete classes |
+
+## OOP Encapsulation
+
+| Model | Public Interface | Private (Internal) |
+|-------|------------------|---------------------|
+| User | IUser | IUserInternal (password, tokens) |
+| DoshaReport | IDoshaReport | IDoshaReportInternal (birth data, apiResponse) |
+
+Both models use `toJSON()` method to automatically filter sensitive data from API responses.
+
+---
+
+*Updated: April 2026*
