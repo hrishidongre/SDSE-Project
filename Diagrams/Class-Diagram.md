@@ -3,7 +3,7 @@
 > Complete architecture showing controllers, services, models, interfaces, and relationships
 
 ```mermaid
-%%{init: {'theme': 'dark'}}%%
+%%{init: {"theme": "dark"}}%%
 classDiagram
     direction TB
     
