@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Frontend-Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white&labelColor=101010" alt="Next.js"/></a>
-  <a href="#"><img src="https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white&labelColor=101010" alt="Node.js"/></a>
+  <a href="https://astrology-app-jade.vercel.app"><img src="https://img.shields.io/badge/Frontend-Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white&labelColor=101010" alt="Next.js"/></a>
+  <a href="https://deepas-vision-backend-production.up.railway.app/health"><img src="https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white&labelColor=101010" alt="Node.js"/></a>
   <a href="#"><img src="https://img.shields.io/badge/Language-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white&labelColor=101010" alt="TypeScript"/></a>
   <a href="#"><img src="https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white&labelColor=101010" alt="MongoDB"/></a>
   <a href="#"><img src="https://img.shields.io/badge/Styling-Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white&labelColor=101010" alt="Tailwind"/></a>
@@ -215,6 +215,16 @@ npm run dev
 Frontend → http://localhost:3000
 Backend  → http://localhost:5000
 ```
+
+---
+
+## 🌐 Live Demo
+
+| Service | URL |
+|---------|-----|
+| **Frontend** | https://astrology-app-jade.vercel.app |
+| **Backend** | https://deepas-vision-backend-production.up.railway.app |
+| **Health Check** | https://deepas-vision-backend-production.up.railway.app/health |
 
 ---
 
