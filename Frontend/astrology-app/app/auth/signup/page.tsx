@@ -37,7 +37,7 @@ export default function SignupPage() {
     <div className="min-h-screen bg-void flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <Link href="/" className="flex items-center gap-2 justify-center mb-10">
-          <span className="text-amber text-xl">★</span>
+          <img src="/logo.svg" alt="logo" className="w-7 h-7 object-contain" />
           <span className="text-amber font-serif text-xl">Deepa&apos;s Vision</span>
         </Link>
 

@@ -26,7 +26,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-gold/10">
           <div className="flex flex-col gap-4">
             <a href="/" className="flex items-center gap-2 text-lg">
-              <span className="text-amber">★</span>
+              <img src="/logo.svg" alt="logo" className="w-6 h-6 object-contain" />
               <span className="text-amber font-serif">Deepa&apos;s Vision</span>
             </a>
             <p className="text-cosmic text-sm leading-relaxed">

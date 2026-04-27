@@ -25,7 +25,7 @@ export default function Navbar() {
       aria-label="Main navigation"
     >
       <Link href="/" className="flex items-center gap-2 text-lg font-semibold tracking-wide">
-        <span className="text-amber">★</span>
+        <img src="/logo.svg" alt="logo" className="w-6 h-6 object-contain" />
         <span className="text-amber font-serif">Deepa&apos;s Vision</span>
       </Link>
 

@@ -123,7 +123,7 @@ function BirthChartContent() {
       {/* Navbar */}
       <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 bg-surface border-b border-gold/20">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-amber">★</span>
+          <img src="/logo.svg" alt="logo" className="w-6 h-6 object-contain" />
           <span className="text-amber font-serif">Deepa&apos;s Vision</span>
         </Link>
         <Link href="/dashboard" className="text-xs tracking-widest text-cosmic hover:text-gold transition-colors">
