@@ -1,5 +1,9 @@
-import axios, { AxiosError, AxiosInstance } from "axios";
-import { vedicAstroConfig } from "../config/vedicAstroConfig";
+import axios, { AxiosInstance } from "axios";
+import {
+  chartTypeToEndpoint,
+  ChartType,
+  vedicAstroConfig,
+} from "../config/vedicAstroConfig";
 import { BaseService } from "../core/BaseService";
 import { DoshaResult, DoshaType, VedicParams, VedicPlanet } from "../types/vedic";
 import { IAstroService } from "./interfaces/IAstroService";
@@ -23,6 +27,7 @@ const NADI_MAP: Record<string, string> = {
 export class AstroService extends BaseService implements IAstroService {
   protected readonly serviceName = "AstroService";
   private readonly client: AxiosInstance;
+  private readonly freeAstroClient: AxiosInstance;
 
   constructor() {
     super();
@@ -30,6 +35,10 @@ export class AstroService extends BaseService implements IAstroService {
       baseURL: vedicAstroConfig.baseURL,
       timeout: vedicAstroConfig.timeout,
       headers: { "x-api-key": vedicAstroConfig.apiKey },
+    });
+    this.freeAstroClient = axios.create({
+      baseURL: vedicAstroConfig.chartBaseURL,
+      timeout: vedicAstroConfig.timeout,
     });
   }
 
@@ -204,6 +213,43 @@ export class AstroService extends BaseService implements IAstroService {
 
   public fetchBirthChart(params: VedicParams): Promise<Record<string, unknown>> {
     return this.fetchVedicChart(params);
+  }
+
+  public async fetchChartByType(params: VedicParams, chartType: ChartType): Promise<Record<string, unknown>> {
+    const isSupported = Object.values(chartTypeToEndpoint).includes(chartType);
+    if (!isSupported) {
+      throw new Error(`Unsupported chart type: ${chartType}`);
+    }
+
+    const [day, month, year] = params.dob.split("/").map((value) => Number(value));
+    const [hours, minutes] = params.tob.split(":").map((value) => Number(value));
+    const timezone = Number(String(params.tz).replace("+", ""));
+
+    const payload = {
+      year,
+      month,
+      date: day,
+      hours,
+      minutes,
+      seconds: 0,
+      latitude: params.lat,
+      longitude: params.lon,
+      timezone,
+      config: {
+        observation_point: "topocentric",
+        ayanamsha: "lahiri",
+      },
+      language: "en",
+    };
+
+    const response = await this.freeAstroClient.post(chartType, payload, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": vedicAstroConfig.chartApiKey,
+      },
+    });
+
+    return response.data as Record<string, unknown>;
   }
 }
 

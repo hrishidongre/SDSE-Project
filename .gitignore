@@ -19,14 +19,23 @@ build/
 # env files
 .env
 .env.local
+.env.example
 .env.development.local
 .env.test.local
 .env.production.local
+
+# IDE and tools
+.gemini/
+.claude/
+.graphify/
+.vscode/
+.idea/
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 
 # typescript
 *.tsbuildinfo
@@ -34,6 +43,17 @@ next-env.d.ts
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
 .worktrees/
+
+# AI assistant files (local only)
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+ARCHITECTURAL_DOCS.md
+
+# Opencode config (local only)
+opencode.json
+
 graphify-out/
