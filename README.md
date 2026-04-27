@@ -2,7 +2,7 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FF6B35,100:FFD700&height=220&section=header&text=Deepa's+Vision&fontSize=72&fontColor=ffffff&animation=twinkling&fontAlignY=35" width="100%" />
 
-<h3 align="center">✨ THE VEDIC ASTROLOGY INTELLIGENCE PLATFORM</h3>
+<h3 align="center"> THE VEDIC ASTROLOGY INTELLIGENCE PLATFORM</h3>
 
 <p align="center">
 <b>Deepa's Vision</b> is a full-stack Vedic astrology platform that transforms raw birth data into precise astronomical insights — birth charts, planetary dosha detection, and personalized reports, powered by real astronomical computation.
@@ -21,42 +21,42 @@
 
 ---
 
-## 🌌 The Vision
+## The Vision
 
 Most astrology apps give you a generic horoscope. **Deepa's Vision** gives you the truth. Feed it your birth coordinates and timestamp — and the platform constructs your complete Vedic identity: natal chart, dosha severity, planetary positions, all anchored in real astronomical data. No guesswork. No generic readings. Just pure Jyotish science.
 
 ---
 
-## ⚡ Core Arsenal (Features)
+## Core Arsenal (Features)
 
 <details open>
-  <summary><b>🪐 Birth Chart (Kundli) Generation</b></summary>
+  <summary><b>Birth Chart (Kundli) Generation</b></summary>
   <blockquote>Generates a precise Vedic natal chart using real astronomical computations via the VedicAstro API. Planetary positions, house placements, and the full Kundli grid are rendered visually and stored per user for future reference.</blockquote>
 </details>
 
 <details open>
-  <summary><b>🔮 Dosha Detection Engine</b></summary>
+  <summary><b>Dosha Detection Engine</b></summary>
   <blockquote>Detects and analyzes Mangal Dosh, Kaal Sarp Dosh, Sade Sati, Pitra Dosh, and Nadi Dosh from your birth parameters. A 24-hour MongoDB caching layer ensures zero redundant API calls — reports are served instantly on repeat visits.</blockquote>
 </details>
 
 <details open>
-  <summary><b>👤 Personalized Astrology Profile</b></summary>
+  <summary><b>Personalized Astrology Profile</b></summary>
   <blockquote>Create and manage a persistent birth profile with name, date of birth, time of birth, birthplace coordinates, gender, and timezone. All charts and doshas are tethered to this profile, building a complete astrological identity over time.</blockquote>
 </details>
 
 <details open>
-  <summary><b>🛡️ Secure JWT Authentication</b></summary>
+  <summary><b>Secure JWT Authentication</b></summary>
   <blockquote>Enterprise-grade security using stateless JWT tokens, HttpOnly cookies, Bcrypt password hashing, and a dedicated <code>AuthMiddleware</code> that guards every private route. The VedicAstro API key never leaves the server.</blockquote>
 </details>
 
 <details open>
-  <summary><b>📁 Saved Charts & Reports</b></summary>
+  <summary><b>Saved Charts & Reports</b></summary>
   <blockquote>View, rename, and delete previously generated birth charts and dosha reports from a dedicated saved history page. Pagination and sort controls keep large chart histories manageable.</blockquote>
 </details>
 
 ---
 
-## 🧬 Architectural DNA (System Design)
+## Architectural DNA (System Design)
 
 Deepa's Vision operates on a strict **3-Tier MVC-S Architecture** with a secure API proxy layer and an intelligent caching strategy.
 
@@ -64,14 +64,14 @@ Deepa's Vision operates on a strict **3-Tier MVC-S Architecture** with a secure 
 
 ```mermaid
 graph TD
-    A[👨‍💻 User] -->|HTTP Request| B(⚛️ Next.js Frontend)
-    B -->|Authenticated Payload| C{⚡ Express Controller}
+    A[User] -->|HTTP Request| B(Next.js Frontend)
+    B -->|Authenticated Payload| C{Express Controller}
 
-    C -->|Verify JWT| F[🛡️ Auth Middleware]
-    F -->|Delegate| S[⚙️ Business Service]
+    C -->|Verify JWT| F[Auth Middleware]
+    F -->|Delegate| S[Business Service]
 
-    S -->|Persist / Cache| D[(🍃 MongoDB Atlas)]
-    S -->|VedicParams| E((🪐 AstroService))
+    S -->|Persist / Cache| D[(MongoDB Atlas)]
+    S -->|VedicParams| E((AstroService))
 
     E -->|Strategy Map| G[VedicAstro API]
     G -->|JSON Response| S
@@ -98,11 +98,11 @@ graph TD
 
 ---
 
-## 🏗️ Design Patterns & SOLID Principles
+## Design Patterns & SOLID Principles
 
 Deepa's Vision is built on a rigorously structured, enterprise-grade architecture. Every design decision was made to maximize scalability, testability, and separation of concerns.
 
-### 🧩 Core Design Patterns
+### Core Design Patterns
 
 1. **MVC-S (Model-View-Controller-Service)** *(Architectural Pattern)*  
    **How & Why:** The architectural backbone. Controllers exclusively handle HTTP and delegate everything to Services. Services own all business logic, cache decisions, and API orchestration. Models bind strictly to MongoDB schemas. Zero business logic leaks into controllers.
@@ -119,7 +119,7 @@ Deepa's Vision is built on a rigorously structured, enterprise-grade architectur
 5. **Chain of Responsibility** (`authMiddleware.ts`) *(Behavioral Design Pattern)*  
    **How & Why:** The `AuthMiddleware` intercepts every protected route before the controller sees it. It decodes the JWT, validates the user, and calls `next()` to pass the baton. If the token is invalid or expired, the chain terminates immediately with `401 Unauthorized` — the controller never executes.
 
-### 🏛️ SOLID Principles Implemented
+### SOLID Principles Implemented
 
 - **S (Single Responsibility):** `AstroService` only calls the external API. `DoshaService` only handles formatting and severity calculation. `BirthChartService` only handles date/time conversions. No class has two unrelated jobs.
 - **O (Open/Closed):** The `DOSHA_ENDPOINT_MAP` is closed for modification but open for extension. Adding a new dosha type requires adding one line to the map — no existing methods change.
@@ -129,7 +129,7 @@ Deepa's Vision is built on a rigorously structured, enterprise-grade architectur
 
 ---
 
-## 🎮 Execution Flow (Sequence)
+## Execution Flow (Sequence)
 
 How does a dosha request travel through the system?
 
@@ -139,12 +139,12 @@ How does a dosha request travel through the system?
 sequenceDiagram
     autonumber
     actor User
-    participant Frontend as ⚛️ Next.js UI
-    participant Auth as 🛡️ Auth Middleware
-    participant Controller as ⚡ DoshaController
-    participant Service as ⚙️ DoshaService
-    participant Cache as 🍃 MongoDB Cache
-    participant API as 🪐 VedicAstro API
+    participant Frontend as  Next.js UI
+    participant Auth as  Auth Middleware
+    participant Controller as  DoshaController
+    participant Service as  DoshaService
+    participant Cache as  MongoDB Cache
+    participant API as  VedicAstro API
 
     User->>Frontend: Select Dosha + Submit Form
     Frontend->>Auth: GET /api/dosha/:type (JWT Cookie)
@@ -174,7 +174,7 @@ sequenceDiagram
 
 ---
 
-## ⚙️ Hyper-Drive Boot Sequence (Setup)
+## Hyper-Drive Boot Sequence (Setup)
 
 ### Prerequisites
 
@@ -212,13 +212,13 @@ npm run dev
 ### 4. Open in Browser
 
 ```
-Frontend → http://localhost:3000
-Backend  → http://localhost:5000
+Frontend  http://localhost:3000
+Backend   http://localhost:5000
 ```
 
 ---
 
-## 🌐 Live Demo
+## Live Demo
 
 | Service | URL |
 |---------|-----|
@@ -228,7 +228,7 @@ Backend  → http://localhost:5000
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 ### Backend `.env`
 
@@ -249,19 +249,19 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api
 
 ---
 
-## 🗺 Roadmap
+## Roadmap
 
 - [x] Auth — Register, Login, Forgot/Reset Password
 - [x] User Profile — Create & Update birth details
 - [x] Birth Chart Generation (Kundli via VedicAstro API)
 - [x] Dosha Detection with MongoDB caching (Mangal, Kaal Sarp, Sade Sati, Pitra, Nadi)
 - [x] Saved Charts & Reports with pagination
-- [ ] Navamsa / D9 Chart Support
-- [ ] Kundli Matching (Compatibility Score)
-- [ ] Horoscope by Zodiac Sign
-- [ ] PDF Export of Birth Charts & Reports
-- [ ] Push Notifications for Daily Horoscope
-- [ ] Admin Dashboard
+- [] Navamsa / D9 Chart Support
+- [] Kundli Matching (Compatibility Score)
+- [] Horoscope by Zodiac Sign
+- [] PDF Export of Birth Charts & Reports
+- [] Push Notifications for Daily Horoscope
+- [] Admin Dashboard
 
 ---
 
@@ -269,5 +269,5 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FF6B35,100:FFD700&height=120&section=footer" width="100%" />
 
   <b>Designed for Seekers. Built by the Deepa's Vision Team.</b><br/>
-  <i>Leave a ⭐ if the stars aligned for you!</i>
+  <i>Leave a  if the stars aligned for you!</i>
 </div>
